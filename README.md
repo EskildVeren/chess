@@ -21,3 +21,25 @@ That said, here is my planned architecture for this project
 ![Alt text](images/api_diagram.png)
 
 The server will handle all the logic for in the game. This is to ensure that both players have the same state in the game, and for security reasons, so that one cant run a hacked version of the game. Chess is also simple enough for the computer to handle the needed calculations without any percieved delays. The front-end will send back the decision of the players.
+
+## Some more thoughts; 24.10;
+
+I wont be able to work much on this project, since I am currently studying for exams (First one being in twoo weeks). I will still write down some thoughts on the project, so that I have it for later. I am currently thinking about how to check for valid moves for every piece. I will therefore write down every possible chess move I can think of, and checks that will need to be made. From these thoughts, I will make a system that reliably finds all valid moves, and find what "valid moves" lead to invalid board states (such as a player checking their own king)
+
+### Knights
+
+These will move in an L-shape, and will probably be the easiest to program
+
+### Rook, bishop and queen moves
+
+These pieces will move infinitely, either straight, diagonally or both. Infinitely until they hit a wall, before a friendly piece, or on an enemy piece.
+
+### Pawn
+
+First of all, these will only be able to move in one direction. This direction will vary based on what player owns them. This will be in the direction of the enemy at the start of the game. They will only be able to move one tile in this direction, unless it is their first move. We therefore need to keep track of whether they are on their first move. Also, hwen they reach the other side of the board, we will ned to handle pawn promotions. Lastly, we will need to check if the pawn can do the en passant move.
+
+### King
+
+The king can move one tile in any direction. We will also need to check if the king of any player is in check after any completed, or potential move. I do not want to make a player think they can do a move they cant do. I will therefore have a way of checking potential board states after a move are correct. It is probably also possible just to check for pieces that block threats to the kings. This would probalby we favourable for a server in production in order to make computations cheaper.
+
+Lastly, we will need to handle castling. THis will involve checkng if the king, or the tiles between the tile and the rook are under attack of an enemy piece. Also, we will need to check that the spaces between them are empty. I must also be the first move of both participants in the castling move.
