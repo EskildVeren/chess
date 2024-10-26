@@ -1,16 +1,27 @@
 import type { Piece } from "./pieces/Piece.ts";
 
 export class Tile {
-  x: number;
-  y: number;
-  piece: Piece | null;
+  private x: number;
+  private y: number;
+  private isUnderAttack: boolean;
+  private piece: Piece | null;
+
   constructor(x: number, y: number) {
     this.x = x;
     this.y = y;
     this.piece = null;
+    this.isUnderAttack = false;
   }
+
   setPiece(piece: Piece) {
     this.piece = piece;
-    piece.tile = this;
+  }
+
+  setIsUnderAttack(isUnderAttack: boolean) {
+    this.isUnderAttack = isUnderAttack;
+  }
+
+  getPiece() {
+    return this.piece;
   }
 }
