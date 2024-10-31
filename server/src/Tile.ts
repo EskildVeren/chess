@@ -13,6 +13,14 @@ export class Tile {
     this.isUnderAttack = false;
   }
 
+  getX() {
+    return this.x;
+  }
+
+  getY() {
+    return this.y;
+  }
+
   setPiece(piece: Piece) {
     this.piece = piece;
   }

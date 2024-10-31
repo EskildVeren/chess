@@ -7,8 +7,8 @@ import { Rook } from "../pieces/Rook.ts";
 import type { Tile } from "../Tile.ts";
 
 export function getPieceForTile(tile: Tile) {
-  const y = tile.y;
-  const x = tile.x;
+  const x = tile.getX();
+  const y = tile.getY();
 
   const player = Math.floor(y / 4);
 
