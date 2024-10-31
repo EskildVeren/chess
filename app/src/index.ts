@@ -1,115 +1,115 @@
-import { isGameOver } from "./assets/isGameOver";
-import { ChessBoard } from "./gameObjects/chessBoard";
-import { ChessPiece } from "./gameObjects/chessPiece";
-import { Tile } from "./gameObjects/chessTile";
+import { io } from "socket.io-client";
 
-// Get assets from document and set properties
+function drawBoard(
+  boardWidth: number,
+  blackColor: string,
+  whiteColor: string,
+  ctx: CanvasRenderingContext2D
+) {
+  const tileWidth = boardWidth / 8;
+  for (let x = 0; x < 8; x++) {
+    for (let y = 0; y < 8; y++) {
+      let fillColor = whiteColor;
+
+      if (tileIsBlack(x, y)) {
+        fillColor = blackColor;
+      }
+
+      ctx.fillStyle = fillColor;
+      ctx.fillRect(x * tileWidth, y * tileWidth, tileWidth, tileWidth);
+    }
+  }
+}
+
+type Piece = {
+  x: number;
+  y: number;
+  color: string;
+};
+
+function drawPieces(
+  pieces: Piece[],
+  boardSize: number,
+  tilePaddingPercent: number,
+  ctx: CanvasRenderingContext2D
+) {
+  const tileSize = boardSize / 8;
+  pieces.forEach((piece: Piece) => {
+    drawPiece(piece, tileSize, tilePaddingPercent, ctx);
+  });
+}
+
+// If x and y share parity, then the tile should be black
+function tileIsBlack(x: number, y: number) {
+  const xIsEven = x % 2;
+  const yIsEven = y % 2;
+  const xAndYShareParity = xIsEven == yIsEven;
+  return xAndYShareParity;
+}
+
+function drawPiece(
+  piece: Piece,
+  tileSize: number,
+  tilePaddingPercent: number,
+  ctx: CanvasRenderingContext2D
+) {
+  const tilePadding = (tileSize / 200) * tilePaddingPercent;
+  const xPixelCord = piece.x * tileSize + tilePadding;
+  const yPixelCord = piece.y * tileSize + tilePadding;
+  const pieceSize = tileSize - tilePadding * 2;
+  ctx.fillStyle = piece.color;
+  ctx.fillRect(xPixelCord, yPixelCord, pieceSize, pieceSize);
+}
+
 const canvas = document.querySelector("canvas");
 
-if (canvas == null) {
+if (!(canvas instanceof HTMLCanvasElement)) {
   throw new Error("Canvas not found");
 }
 
 const ctx = canvas.getContext("2d");
 
-if (ctx == null) {
-  throw new Error("ctx not found");
+if (!(ctx instanceof CanvasRenderingContext2D)) {
+  throw new Error("Canvas not found");
 }
 
-const body = document.querySelector("body");
+const boardSize = 800;
+canvas.height = boardSize;
+canvas.width = boardSize;
 
-if (body == null) {
-  throw new Error("Body not found");
+const pieces: Piece[] = [];
+
+for (let x = 0; x < 8; x++) {
+  for (let y = 0; y < 2; y++) {
+    pieces.push({ x: x, y: y, color: "grey" });
+  }
 }
 
-// Setting dimensions of the canvas
-const canvasWidth = 800;
-const canvasHeight = 800;
-canvas.width = canvasWidth;
-canvas.height = canvasHeight;
-
-// Initiate game objects
-const board = new ChessBoard(800);
-board.calculateValidMoves("white");
-let clickedPiece: ChessPiece | null = null;
-let clickedTile = null;
-let markedPiece: ChessPiece | null;
-const states = {
-  base: "base",
-  showPossibleMoves: "showPossibleMoves",
-  movePiece: "movePiece",
-};
-const gameState = {
-  state: states.base,
-  numberOfMoves: 0,
-  playerTurn: "white",
-};
-
-// Add eventlisteners to canvas
-canvas.addEventListener("click", (e) => {
-  main();
-  // Redraws board on click
-  // Finding where on the canvas the click happened
-  const canvasRect = canvas.getBoundingClientRect();
-  const mouseX = e.clientX - canvasRect.left;
-  const mouseY = e.clientY - canvasRect.top;
-
-  // Using the cursor coordinates relative to the canvas in order to find what square was clicked
-  const tileWidth = board.pixelSize / 8;
-  const xCord = Math.floor(mouseX / tileWidth);
-  const yCord = Math.floor(mouseY / tileWidth);
-
-  clickedTile = board.tiles[xCord][yCord];
-  clickedPiece = clickedTile.piece;
-
-  // If a tile containing a piece that can move is clicked
-  if (clickedPiece != null && clickedPiece.owner == gameState.playerTurn) {
-    markedPiece = clickedPiece;
-
-    gameState.state = states.showPossibleMoves;
-    clickedPiece.validMoves.forEach((tile: Tile) => {
-      tile.mark(ctx, "blue");
-    });
-    // Else if a valid move is clicked
-  } else if (
-    markedPiece != null &&
-    //clickedPiece != null &&
-    markedPiece.validMoves.includes(clickedTile)
-  ) {
-    gameState.state = states.movePiece;
-    const pieceMoved: boolean = board.movePiece(markedPiece, clickedTile);
-    //console.log(board.movePiece(markedPiece, clickedTile));
-    //board.calculateValidMoves(ctx);
-    console.log(pieceMoved);
-
-    if (pieceMoved === true) {
-      main();
-      if (gameState.playerTurn == "white") {
-        gameState.playerTurn = "black";
-      } else {
-        gameState.playerTurn = "white";
-      }
-    }
-    if (isGameOver(board.kings)) {
-      console.log(`${gameState.playerTurn} lost`);
-    }
+for (let x = 0; x < 8; x++) {
+  for (let y = 6; y < 8; y++) {
+    pieces.push({ x: x, y: y, color: "brown" });
   }
-  // If no valid move was chosen
-  else {
-    gameState.state = states.base;
-    markedPiece = null;
-  }
+}
 
-  console.log(gameState.state);
+drawBoard(boardSize, "black", "white", ctx);
+drawPieces(pieces, boardSize, 30, ctx);
+
+const socket = io("http://localhost:3000/", {
+  withCredentials: true,
+  extraHeaders: {
+    "my-custom-header": "abcd",
+  },
 });
 
-// Main function for updating game
-const main = () => {
-  // Draw board
-  board.drawTiles(ctx);
-  //board.drawPieces(ctx);
-  // Draw pieces
-};
+socket.io.on("open", () => {
+  console.log("hiiii");
+  console.log();
+});
 
-// initiate animation
-main();
+socket.io.on("ping", () => {
+  console.log("PING");
+});
+
+socket.io.on("data", (data) => {
+  document.write(data);
+});
