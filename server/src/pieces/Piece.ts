@@ -14,6 +14,10 @@ export class Piece {
     return this.player;
   }
 
+  getTile() {
+    return this.tile;
+  }
+
   getTilesThisAttacks() {
     return this.tilesThisAttacks;
   }
@@ -27,7 +31,7 @@ export class Piece {
   }
 
   setTile(tile: Tile) {
-    this.setTile(tile);
+    this.tile = tile;
   }
 
   moveTo(tile: Tile) {
