@@ -46,4 +46,12 @@ Lastly, we will need to handle castling. THis will involve checkng if the king, 
 
 ## 26.10; Writing some code
 
-I still need to read A LOOOOT, but I still want to complete this project. At the start of the project, I thought that I would write most of the back-end code and move to the front-end. It turns out to be quite hard to do this without actually being able to display the logic that I am coding. I want to include automatic testing for the project, but I still think that it will be smart to be able to view what is claculated in the back-end. ALso, it may uncover logical flaws in the backend code, regarding how the data should be handled. It is also nice to actually check if hte project will work as I want it to, before developing the whole back-end. I have created some functions for drawing the chessboard and pieces, and will soon test them out.
+I still need to read A LOOOOT, but I still want to complete this project. At the start of the project, I thought that I would write most of the back-end code and move to the front-end. It turns out to be quite hard to do this without actually being able to display the logic that I am coding. I want to include automatic testing for the project, but I still think that it will be smart to be able to view what is claculated in the back-end. Also, it may uncover logical flaws in the backend code, regarding how the data should be handled. It is also nice to actually check if the project will work as I want it to, before developing the whole back-end. I have created some functions for drawing the chessboard and pieces, and will soon test them out.
+
+## 27.12; Two months later
+
+I was working on creating snake in canvas, but snake is boring. Chess is better.
+
+## 31.12; Creating tests
+
+I have now started on this project again. Currently, my time is spent getting used to testing in Deno. I now have tests for most of the code I know I want in a certain way. The way the tests are done may be redone over time.

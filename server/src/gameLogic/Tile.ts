@@ -1,4 +1,4 @@
-import type { Piece } from "./pieces/Piece.ts";
+import type { Piece } from "../pieces/Piece.ts";
 
 export class Tile {
   private x: number;
@@ -19,6 +19,10 @@ export class Tile {
 
   getY() {
     return this.y;
+  }
+
+  getIsUnderAttack() {
+    return this.isUnderAttack;
   }
 
   setPiece(piece: Piece) {

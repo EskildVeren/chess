@@ -1,6 +1,6 @@
-import type { Gameboard } from "../Gameboard.ts";
+import type { Gameboard } from "../gameLogic/Gameboard.ts";
 import { Piece } from "../pieces/Piece.ts";
-import type { Tile } from "../Tile.ts";
+import type { Tile } from "../gameLogic/Tile.ts";
 
 export function convertChessDataToJSON(board: Gameboard) {
   const pieces: Piece[] = [];

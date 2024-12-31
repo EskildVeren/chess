@@ -1,6 +1,6 @@
 import { Tile } from "./Tile.ts";
-import { getPieceForTile } from "./helperFunctions/getPieceForTile.ts";
-import { Piece } from "./pieces/Piece.ts";
+import { getPieceForTile } from "../gameLogic/getPieceForTile.ts";
+import { Piece } from "../pieces/Piece.ts";
 
 export class Gameboard {
   private tiles: Tile[][];

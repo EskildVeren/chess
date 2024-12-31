@@ -1,11 +1,15 @@
-import type { Tile } from "../Tile.ts";
+import type { Tile } from "../gameLogic/Tile.ts";
 
 export class Piece {
   private tile!: Tile;
   private player: number;
   private tilesThisAttacks: Tile[];
+  x: number;
+  y: number;
   constructor(tile: Tile, player: number) {
     this.moveTo(tile);
+    this.x = tile.getX();
+    this.y = tile.getY();
     this.player = player;
     this.tilesThisAttacks = [];
   }

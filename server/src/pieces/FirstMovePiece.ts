@@ -1,4 +1,4 @@
-import type { Tile } from "../Tile.ts";
+import type { Tile } from "../gameLogic/Tile.ts";
 import { Piece } from "./Piece.ts";
 
 export class FirstMovePiece extends Piece {
@@ -12,5 +12,9 @@ export class FirstMovePiece extends Piece {
     this.setTile(tile);
     tile.setPiece(this);
     this.hasMoved = true;
+  }
+
+  getHasMoved() {
+    return this.hasMoved;
   }
 }

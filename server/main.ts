@@ -1,4 +1,4 @@
-import { Gameboard } from "./src/Gameboard.ts";
+import { Gameboard } from "./src/gameLogic/Gameboard.ts";
 
 export function add(a: number, b: number): number {
   return a + b;

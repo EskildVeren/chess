@@ -4,7 +4,7 @@ import { Knight } from "../pieces/Knight.ts";
 import { Pawn } from "../pieces/Pawn.ts";
 import { Queen } from "../pieces/Queen.ts";
 import { Rook } from "../pieces/Rook.ts";
-import type { Tile } from "../Tile.ts";
+import { Tile } from "./Tile.ts";
 
 export function getPieceForTile(tile: Tile) {
   const x = tile.getX();
@@ -14,6 +14,10 @@ export function getPieceForTile(tile: Tile) {
 
   if (y == 1 || y == 6) {
     return new Pawn(tile, player);
+  }
+
+  if (y != 0 && y != 7) {
+    return null;
   }
 
   if (x == 0 || x == 7) {

@@ -1,5 +1,5 @@
 import { Server } from "npm:socket.io@4.8.0";
-import { Gameboard } from "./src/Gameboard.ts";
+import { Gameboard } from "./src/gameLogic/Gameboard.ts";
 
 // Initializeing server and settings
 const io = new Server(3000, {
